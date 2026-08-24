@@ -8,7 +8,24 @@ This repository contains five distinct data science projects, each focusing on a
 2. **Gaussian Naive Bayes Classifier on the MNIST Dataset**
 3. **One-vs-All Logistic Regression Ensemble on the MNIST Dataset**
 4. **K-means Clustering on the Iris Dataset**
-5. **Color Quantization using K-means**
+5. **Color Quantization using K-means** — lives inside `K-means/K-means.ipynb`, not a separate folder
+
+### Notebooks
+| # | Notebook |
+|---|---|
+| 1 | `SVD Image Compression and Reconstruction/Singular Value Decomposition.ipynb` |
+| 2 | `Gaussian Naive Bayes Classifier on the MNIST Dataset/Gaussian Naive Bayes Classifier.ipynb` |
+| 3 | `One-vs-All Logistic Regression Ensemble on the MNIST Dataset/One-vs-All Logistic Regression Ensemble.ipynb` |
+| 4, 5 | `K-means/K-means.ipynb` |
+
+Each folder also holds a PDF export of its notebook. The two MNIST projects read
+from the `data.zip` in their own folder; the SVD and K-means projects use the
+`.jpg` alongside them. No external download is required.
+
+### Requirements
+`numpy`, `scipy`, `matplotlib`, `scikit-learn`, `Pillow`, `jupyter`.
+The algorithms themselves are implemented from scratch — scikit-learn is used
+only for PCA in the K-means notebook and for the train/test split.
 
 ---
 
@@ -91,7 +108,12 @@ To reduce the number of distinct colors in an image using K-means clustering, ai
 ---
 
 ## Installation and Usage
-Instructions for setting up the environment and running the projects can be found in the respective project folders. Each folder contains detailed steps and scripts to execute the projects.
+```bash
+pip install numpy scipy matplotlib scikit-learn Pillow jupyter
+jupyter notebook
+```
+Open any of the notebooks listed above and run it top to bottom. The MNIST projects
+expect `data.zip` unzipped in place alongside the notebook.
 
 ---
 
