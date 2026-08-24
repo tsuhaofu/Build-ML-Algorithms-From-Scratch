@@ -24,8 +24,23 @@ from the `data.zip` in their own folder; the SVD and K-means projects use the
 
 ### Requirements
 `numpy`, `scipy`, `matplotlib`, `scikit-learn`, `Pillow`, `jupyter`.
-The algorithms themselves are implemented from scratch — scikit-learn is used
-only for PCA in the K-means notebook and for the train/test split.
+
+### What "from scratch" covers
+
+It is not uniform across the five projects, so here is the scope of each:
+
+| # | Project | Implemented here | Taken from a library |
+|---|---|---|---|
+| 1 | SVD compression | rank-k reconstruction, MSE, scree plots | the decomposition itself — `np.linalg.svd` |
+| 2 | Gaussian Naive Bayes | the classifier: `fit`, `predict`, per-class covariance, smoothing | the Gaussian density — `scipy.stats.multivariate_normal` |
+| 3 | One-vs-All Logistic Regression | data loading and per-class evaluation | **the model — `sklearn.linear_model.LogisticRegression(multi_class='ovr')`** |
+| 4 | K-means on Iris | `class KMeans` — `fit`, `predict`, `fit_predict` | `load_iris`, `PCA` for plotting, `GaussianMixture` as a comparison |
+| 5 | Color quantization | the same hand-written `KMeans`, applied to pixels | — |
+
+**Project 3 is the exception.** scikit-learn fits the ten binary models through its own
+one-vs-rest wrapper; the notebook does not implement logistic regression. Projects 2, 4
+and 5 are hand-written classifiers, and project 1 builds everything around NumPy's
+decomposition.
 
 ---
 
@@ -85,8 +100,13 @@ To develop a Gaussian Naive Bayes classifier from scratch and apply it to classi
 Build a series of logistic regression models in a one-vs-all setup for the MNIST dataset and combine them into an ensemble to improve prediction accuracy.
 
 ### Methodology
-- Developed ten logistic regression models, each predicting the likelihood of a digit.
-- Combined predictions using ensemble techniques to make final class decisions.
+- Fitted `sklearn.linear_model.LogisticRegression(multi_class='ovr')`, which trains one
+  binary model per digit internally. This project uses scikit-learn's implementation
+  rather than a hand-written one.
+- Evaluated each class separately, then measured the combined ten-class result.
+
+> `multi_class='ovr'` was deprecated in scikit-learn 1.5 and removed in 1.7. To re-run
+> this notebook on a current version, use `OneVsRestClassifier(LogisticRegression())`.
 
 ### Results
 - Per-class one-vs-rest accuracy ranges from 96.11% (class 8) to 99.36% (class 1).
