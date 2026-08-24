@@ -18,9 +18,16 @@ This repository contains five distinct data science projects, each focusing on a
 | 3 | `One-vs-All Logistic Regression Ensemble on the MNIST Dataset/One-vs-All Logistic Regression Ensemble.ipynb` |
 | 4, 5 | `K-means/K-means.ipynb` |
 
-Each folder also holds a PDF export of its notebook. The two MNIST projects read
-from the `data.zip` in their own folder; the SVD and K-means projects use the
-`.jpg` alongside them. No external download is required.
+Each folder also holds a PDF export of its notebook. Nothing needs downloading —
+but the data does not sit where the notebooks look for it, so see
+[Installation and Usage](#installation-and-usage) before running anything:
+
+| Notebook | Path it reads | Where the file actually is |
+|---|---|---|
+| Gaussian Naive Bayes | `./mnist_train.csv`, `./mnist_test.csv` | inside `data.zip`, which unpacks to `data/mnist_train.csv` |
+| One-vs-All Logistic Regression | `./mnist_train.csv`, `./mnist_test.csv` | as above |
+| SVD | `purdue.jpg` | `SVD Image Compression and Reconstruction/purdue.jpg` ✅ |
+| K-means / colour quantization | `./hw4_data/hw4_purdue.jpg` | `K-means/hw4_purdue.jpg` — there is no `hw4_data/` directory |
 
 ### Requirements
 `numpy`, `scipy`, `matplotlib`, `scikit-learn`, `Pillow`, `jupyter`.
@@ -47,7 +54,10 @@ decomposition.
 ## 1. SVD Image Compression and Reconstruction
 
 ### Objective
-To implement Singular Value Decomposition (SVD) from scratch and utilize it for compressing and reconstructing an image, aiming to understand the trade-offs between image quality and data reduction.
+To build an image compression pipeline on top of Singular Value Decomposition — rank-k
+reconstruction, MSE and scree plots written directly against NumPy — and understand the
+trade-off between image quality and data reduction. The decomposition itself is
+`np.linalg.svd`; see [What "from scratch" covers](#what-from-scratch-covers).
 
 ### Methodology
 - Decomposed images into RGB channels and performed SVD on each channel separately.
@@ -97,7 +107,10 @@ To develop a Gaussian Naive Bayes classifier from scratch and apply it to classi
 ## 3. One-vs-All Logistic Regression Ensemble on the MNIST Dataset
 
 ### Objective
-Build a series of logistic regression models in a one-vs-all setup for the MNIST dataset and combine them into an ensemble to improve prediction accuracy.
+Classify MNIST digits with a one-vs-all logistic regression ensemble, and measure how the
+ten binary models compare with the combined ten-class result. The models are fitted by
+scikit-learn, not implemented here — the work in this notebook is the data pipeline and
+the per-class evaluation.
 
 ### Methodology
 - Fitted `sklearn.linear_model.LogisticRegression(multi_class='ovr')`, which trains one
@@ -146,8 +159,10 @@ To reduce the number of distinct colors in an image using K-means clustering, ai
 - Applied different numbers of clusters to observe the impact on image quality and file size.
 
 ### Results
-- Successfully demonstrated color quantization with various palette sizes.
-- Visual and quantitative analysis provided to show the trade-offs involved in color reduction.
+- Quantized the image at several palette sizes using the same hand-written `KMeans`,
+  with the quantized images plotted side by side against the original.
+- The comparison is visual only — the notebook records no reconstruction error or
+  file-size measurement for this project.
 
 ---
 
@@ -156,12 +171,29 @@ To reduce the number of distinct colors in an image using K-means clustering, ai
 pip install numpy scipy matplotlib scikit-learn Pillow jupyter
 jupyter notebook
 ```
-Open any of the notebooks listed above and run it top to bottom. The MNIST projects
-expect `data.zip` unzipped in place alongside the notebook.
+Open any of the notebooks listed above and run it top to bottom — after putting the data
+where the notebook expects it. The paths in the notebooks do not match the layout in this
+repository, so two of them need a step first:
+
+```bash
+# MNIST projects — the archive unpacks into data/, the notebooks read ./
+cd "Gaussian Naive Bayes Classifier on the MNIST Dataset"   # and again for the One-vs-All folder
+unzip -o data.zip && mv data/mnist_*.csv . && rm -rf data __MACOSX
+
+# K-means / colour quantization — the notebook reads ./hw4_data/hw4_purdue.jpg
+cd K-means && mkdir -p hw4_data && cp hw4_purdue.jpg hw4_data/
+```
+
+The SVD notebook needs no setup: it reads `purdue.jpg` from its own folder.
 
 ---
 
 ## Conclusion
-This portfolio highlights my hands-on approach to developing machine learning algorithms from scratch, demonstrating a deep understanding of their underlying principles. These foundational projects serve as a robust basis for advanced problem-solving in the field of data science.
+These projects were written to understand the algorithms from the inside rather than to
+beat a benchmark. Gaussian Naive Bayes and K-means are implemented here in full; the SVD
+project builds its compression pipeline around NumPy's decomposition; the one-vs-all
+ensemble uses scikit-learn and is the exception, kept in the set because the per-class
+versus ten-class comparison is the point of it. The scope of each is set out in
+[What "from scratch" covers](#what-from-scratch-covers).
 
 ---
