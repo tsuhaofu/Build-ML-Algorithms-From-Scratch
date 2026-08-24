@@ -40,8 +40,21 @@ To implement Singular Value Decomposition (SVD) from scratch and utilize it for 
 - Calculated Mean Squared Error (MSE) to quantify the loss from the original image.
 
 ### Results
-- Demonstrated effective image compression and reconstruction with variable numbers of singular values.
-- Visual comparisons and MSE calculations provided insights into the optimal balance between compression and quality.
+- Reconstructed at k = 1, 2, 4, 8, 16, 64, 256 and 1080 singular values. MSE against
+  the original falls from 100.99 at k=1 to 0.63 at k=1080.
+- Most of the signal sits in the leading components: cumulative explained variance is
+  already above 0.90 at the first component on all three channels and has flattened
+  well before 200.
+
+![Scree plots per RGB channel](figures/svd-scree-plot.png)
+*Cumulative explained variance for the red, green and blue channels.*
+
+<details>
+<summary>Rank-k reconstructions, each panel labelled with its MSE (2.3 MB image)</summary>
+
+![Rank-k reconstructions with MSE](figures/svd-reconstruction.png)
+
+</details>
 
 ---
 
@@ -56,8 +69,13 @@ To develop a Gaussian Naive Bayes classifier from scratch and apply it to classi
 - Evaluated model performance across different smoothing parameters using accuracy and a confusion matrix.
 
 ### Results
-- Achieved competitive accuracies on the MNIST test set.
-- Identified optimal smoothing parameter for the best balance between precision and computational efficiency.
+- Smoothing swept over {0.001, 0.01, 0.1, 1, 10, 100}. Test accuracy across the sweep
+  ranges from 78.38% to 80.80%, i.e. one-zero error 21.62% down to 19.20%.
+- The confusion matrix shows the errors are not spread evenly: 5→3 (135), 9→7 (122),
+  4→9 (116) and 8→1 (109) account for much of the loss.
+
+![Confusion matrix on the MNIST test set](figures/naive-bayes-confusion-matrix.png)
+*Ten-class confusion matrix for the best smoothing setting.*
 
 ---
 
@@ -71,8 +89,10 @@ Build a series of logistic regression models in a one-vs-all setup for the MNIST
 - Combined predictions using ensemble techniques to make final class decisions.
 
 ### Results
-- Each model's performance and the ensemble's overall accuracy were reported.
-- The ensemble model demonstrated superior performance compared to individual classifiers.
+- Per-class one-vs-rest accuracy ranges from 96.11% (class 8) to 99.36% (class 1).
+- The combined ten-class ensemble reaches 92.12% accuracy, one-zero error 7.88%.
+- Note these two figures are not directly comparable: the per-class numbers are binary
+  one-vs-rest accuracies, the ensemble number is over all ten classes.
 
 ---
 
@@ -87,8 +107,12 @@ To implement K-means clustering from scratch and apply it to the Iris dataset to
 - Compared clustering results against the known labels from the Iris dataset.
 
 ### Results
-- Evaluated the effectiveness of the clustering by comparing predicted clusters with true labels.
-- Discussed any discrepancies and potential reasons for poor clustering performance in specific cases.
+- Five random restarts at |C|=3, plotted in PCA space against the known Iris labels.
+- Four restarts converge to the same partition; one does not — a plain illustration of
+  K-means' sensitivity to initialisation rather than a defect in the implementation.
+
+![Five K-means restarts on Iris](figures/kmeans-clusters.png)
+*Five random restarts at |C|=3 in PCA space, centroids marked in red.*
 
 ---
 
